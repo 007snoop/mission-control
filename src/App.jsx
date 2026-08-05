@@ -1,18 +1,16 @@
 import "./App.css";
-import { iniPlanets } from "./planets/planetData";
-import PlanetNode from "./planets/PlanetNode";
+import SolarSystem from "./planets/SolarSystem";
 import { useState, useEffect } from "react";
 import { fetchSpaceData } from "./planets/planetData";
 
 function App() {
   const greeting = "Welcome to Mission Control!";
-  const [iniPlanets, setPlanets] = useState([]);
+  const [planets, setPlanets] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function loadData() {
       const liveData = await fetchSpaceData();
-
       setPlanets(liveData);
       setLoading(false);
     }
@@ -38,16 +36,7 @@ function App() {
       {loading ? (
         <p>Accessing deep space telemetry...</p>
       ) : (
-        <ul>
-        {iniPlanets.map((planet) => (
-          <PlanetNode 
-          key={planet.id}
-          name={planet.name}
-          color={planet.color}
-          distance={planet.distance}
-          />
-        ))}
-      </ul>
+        <SolarSystem planets={planets} />
       )}
     </div>
   );
