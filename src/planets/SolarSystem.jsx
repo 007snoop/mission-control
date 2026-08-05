@@ -1,5 +1,20 @@
 import { useMemo, useState } from 'react';
 
+const sunBody = {
+  id: 'sun',
+  name: 'Sun',
+  englishName: 'Sun',
+  bodyType: 'Star',
+  distance: '0.00 AU',
+  distanceAU: 0,
+  meanRadiusKm: 696342,
+  surfaceGravity: 274,
+  orbitalPeriodDays: 0,
+  rotationPeriodHours: 609.12,
+  avgTemp: 5778,
+  moons: [],
+};
+
 function formatNumber(value, precision = 1) {
   return value == null || Number.isNaN(value) ? 'Unknown' : value.toFixed(precision);
 }
@@ -7,13 +22,16 @@ function formatNumber(value, precision = 1) {
 const formatValue = (label, value, unit = '') => (
   <div className="detail-tile">
     <div className="detail-label">{label}</div>
-    <div className="detail-value">{value != null ? `${value}${unit}` : 'Unknown'}</div>
+    <div className="detail-value">{typeof value === 'number' ? `${formatNumber(value)}${unit}` : value ?? 'Unknown'}</div>
   </div>
 );
 
 function SolarSystem({ planets }) {
-  const [selectedId, setSelectedId] = useState(planets[0]?.id);
-  const selectedPlanet = planets.find((planet) => planet.id === selectedId) || planets[0];
+  const [selectedId, setSelectedId] = useState(sunBody.id);
+  const selectedPlanet = useMemo(
+    () => [sunBody, ...planets].find((planet) => planet.id === selectedId) || sunBody,
+    [planets, selectedId],
+  );
 
   const sortedPlanets = useMemo(
     () => [...planets].sort((a, b) => (a.distanceAU ?? 0) - (b.distanceAU ?? 0)),
@@ -36,51 +54,58 @@ function SolarSystem({ planets }) {
     Neptune: '#5a6fe0',
   };
 
+  const sunSelected = selectedId === sunBody.id;
+
   return (
     <section className="solar-section">
       <div className="solar-grid">
         <div className="solar-scene" aria-label="Solar system map">
-          <div className="sun" aria-hidden="true" />
+          <button
+            type="button"
+            className={`sun${sunSelected ? ' selected' : ''}`}
+            aria-label="Select Sun"
+            onClick={() => setSelectedId(sunBody.id)}
+          />
           {sortedPlanets.map((planet, index) => {
             const orbitRadius = orbitBase + ((planet.distanceAU ?? 0) / maxDistance) * (orbitMax - orbitBase);
             const angle = (index / sortedPlanets.length) * Math.PI * 2 - Math.PI / 2;
             const x = center + orbitRadius * Math.cos(angle);
             const y = center + orbitRadius * Math.sin(angle);
+            const xPercent = (x / sceneSize) * 100;
+            const yPercent = (y / sceneSize) * 100;
+            const orbitPercent = (orbitRadius * 2 / sceneSize) * 100;
             const planetSize = Math.max(16, Math.min(50, 14 + ((planet.meanRadiusKm ?? 2000) / 2000) * 18));
             const isSelected = planet.id === selectedId;
             const planetColor = planetColors[planet.englishName] ?? '#999';
-            const labelOffsetX = Math.cos(angle) * (planetSize + 14);
-            const labelOffsetY = Math.sin(angle) * (planetSize + 14);
+            const labelOffsetXPercent = (Math.cos(angle) * (planetSize + 14) / sceneSize) * 100;
+            const labelOffsetYPercent = (Math.sin(angle) * (planetSize + 14) / sceneSize) * 100;
 
             return (
               <div key={planet.id}>
                 <div
                   className="orbit"
-                  style={{ width: orbitRadius * 2, height: orbitRadius * 2 }}
+                  style={{ width: `${orbitPercent}%`, height: `${orbitPercent}%` }}
                   aria-hidden="true"
                 />
                 <button
                   type="button"
                   className={`planet-dot${isSelected ? ' selected' : ''}`}
                   style={{
-                    position: 'absolute',
                     width: planetSize,
                     height: planetSize,
                     backgroundColor: planetColor,
-                    left: `${x}px`,
-                    top: `${y}px`,
+                    left: `${xPercent}%`,
+                    top: `${yPercent}%`,
                     transform: 'translate(-50%, -50%)',
                     zIndex: isSelected ? 20 : 10,
                   }}
                   onClick={() => setSelectedId(planet.id)}
-                >
-                  
-                </button>
+                />
                 <div
                   className="planet-label"
                   style={{
-                    left: `${x + labelOffsetX}px`,
-                    top: `${y + labelOffsetY}px`,
+                    left: `${xPercent + labelOffsetXPercent}%`,
+                    top: `${yPercent + labelOffsetYPercent}%`,
                   }}
                 >
                   {planet.englishName}
