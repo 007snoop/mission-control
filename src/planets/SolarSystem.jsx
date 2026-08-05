@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 
 const sunBody = {
   id: 'sun',
-  name: 'Sun',
+  name: 'Sol',
   englishName: 'Sun',
   bodyType: 'Star',
   distance: '0.00 AU',
