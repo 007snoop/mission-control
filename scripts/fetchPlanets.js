@@ -44,11 +44,18 @@ if (!response.ok) {
 const payload = await response.json();
 const planets = payload.bodies
   .filter((body) => body.isPlanet === true)
-  .map((p) => ({
-    id: p.id ?? p.englishName,
-    name: p.englishName,
-    color: p.englishName === 'Earth' ? 'royalblue' : p.englishName === 'Mars' ? 'crimson' : 'goldenrod',
-    distance: `${(p.semimajorAxis / 149597870).toFixed(2)} AU`,
+  .sort((a, b) => (a.semimajorAxis || 0) - (b.semimajorAxis || 0))
+  .map((body) => ({
+    ...body,
+    id: body.id ?? body.englishName,
+    distance: body.semimajorAxis ? `${(body.semimajorAxis / 149597870).toFixed(2)} AU` : null,
+    distanceAU: body.semimajorAxis ? Number((body.semimajorAxis / 149597870).toFixed(6)) : null,
+    meanRadiusKm: body.meanRadius ?? null,
+    equatorialRadiusKm: body.equaRadius ?? null,
+    polarRadiusKm: body.polarRadius ?? null,
+    orbitalPeriodDays: body.sideralOrbit ?? null,
+    rotationPeriodHours: body.sideralRotation ?? null,
+    surfaceGravity: body.gravity ?? null,
   }));
 
 const outputPath = path.resolve(__dirname, '../public/planets.json');

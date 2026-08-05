@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "prebuild": "node ./scripts/fetchPlanets.js",
+    "fetch-planets": "node ./scripts/fetchPlanets.js",
+    "predev": "npm run fetch-planets",
+    "prebuild": "npm run fetch-planets",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"
