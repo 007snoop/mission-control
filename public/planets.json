@@ -1,0 +1,50 @@
+[
+  {
+    "id": "uranus",
+    "name": "Uranus",
+    "color": "goldenrod",
+    "distance": "19.19 AU"
+  },
+  {
+    "id": "neptune",
+    "name": "Neptune",
+    "color": "goldenrod",
+    "distance": "30.07 AU"
+  },
+  {
+    "id": "jupiter",
+    "name": "Jupiter",
+    "color": "goldenrod",
+    "distance": "5.20 AU"
+  },
+  {
+    "id": "mars",
+    "name": "Mars",
+    "color": "crimson",
+    "distance": "1.52 AU"
+  },
+  {
+    "id": "mercure",
+    "name": "Mercury",
+    "color": "goldenrod",
+    "distance": "0.39 AU"
+  },
+  {
+    "id": "saturne",
+    "name": "Saturn",
+    "color": "goldenrod",
+    "distance": "9.54 AU"
+  },
+  {
+    "id": "terre",
+    "name": "Earth",
+    "color": "royalblue",
+    "distance": "1.00 AU"
+  },
+  {
+    "id": "venus",
+    "name": "Venus",
+    "color": "goldenrod",
+    "distance": "0.72 AU"
+  }
+]
