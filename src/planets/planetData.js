@@ -3,11 +3,14 @@ const LSS_API_KEY = import.meta.env.VITE_LSS_API_KEY;
 
 export async function fetchSpaceData() {
   try {
+    const apiBase = import.meta.env.DEV
+      ? '/api'
+      : import.meta.env.VITE_API_URL || 'https://api.le-systeme-solaire.net';
 
-    const response = await fetch(`/api/rest/bodies/`, {
+    const response = await fetch(`${apiBase}/rest/bodies/`, {
       headers: {
         Authorization: `Bearer ${LSS_API_KEY}`,
-        Accept: "application/json",
+        Accept: 'application/json',
       },
     });
 

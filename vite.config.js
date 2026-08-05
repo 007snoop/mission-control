@@ -5,6 +5,9 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   base: '/mission-control/',
   plugins: [react()],
+  build: {
+    outDir: 'docs',
+  },
   server: {
     proxy: {
       '/api': {
