@@ -41,8 +41,8 @@ function SolarSystem({ planets }) {
   const maxDistance = Math.max(...sortedPlanets.map((planet) => planet.distanceAU ?? 0), 1);
   const sceneSize = 620;
   const center = sceneSize / 2;
-  const orbitBase = 60;
-  const orbitMax = 240;
+  const orbitBase = 55;
+  const orbitMax = 290;
   const planetColors = {
     Mercury: '#b8b8b8',
     Venus: '#d0a76d',
@@ -67,18 +67,21 @@ function SolarSystem({ planets }) {
             onClick={() => setSelectedId(sunBody.id)}
           />
           {sortedPlanets.map((planet, index) => {
-            const orbitRadius = orbitBase + ((planet.distanceAU ?? 0) / maxDistance) * (orbitMax - orbitBase);
+            const innerOrbitOffsets = [24, 16, 10];
+            const extraSpacing = innerOrbitOffsets[index] ?? 0;
+            const orbitRadius = orbitBase + ((planet.distanceAU ?? 0) / maxDistance) * (orbitMax - orbitBase) + extraSpacing;
             const angle = (index / sortedPlanets.length) * Math.PI * 2 - Math.PI / 2;
             const x = center + orbitRadius * Math.cos(angle);
             const y = center + orbitRadius * Math.sin(angle);
             const xPercent = (x / sceneSize) * 100;
             const yPercent = (y / sceneSize) * 100;
             const orbitPercent = (orbitRadius * 2 / sceneSize) * 100;
-            const planetSize = Math.max(16, Math.min(50, 14 + ((planet.meanRadiusKm ?? 2000) / 2000) * 18));
+            const planetSizePct = Math.max(2.2, Math.min(7.2, 3.6 + ((planet.meanRadiusKm ?? 2000) / 2000) * 3.2));
+            const labelOffsetPct = planetSizePct + 2.2;
             const isSelected = planet.id === selectedId;
             const planetColor = planetColors[planet.englishName] ?? '#999';
-            const labelOffsetXPercent = (Math.cos(angle) * (planetSize + 14) / sceneSize) * 100;
-            const labelOffsetYPercent = (Math.sin(angle) * (planetSize + 14) / sceneSize) * 100;
+            const labelOffsetXPercent = Math.cos(angle) * labelOffsetPct;
+            const labelOffsetYPercent = Math.sin(angle) * labelOffsetPct;
 
             return (
               <div key={planet.id}>
@@ -91,8 +94,8 @@ function SolarSystem({ planets }) {
                   type="button"
                   className={`planet-dot${isSelected ? ' selected' : ''}`}
                   style={{
-                    width: planetSize,
-                    height: planetSize,
+                    width: `${planetSizePct}%`,
+                    height: `${planetSizePct}%`,
                     backgroundColor: planetColor,
                     left: `${xPercent}%`,
                     top: `${yPercent}%`,

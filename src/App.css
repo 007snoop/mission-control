@@ -25,8 +25,8 @@
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 68px;
-  height: 68px;
+  width: clamp(56px, 12%, 84px);
+  height: clamp(56px, 12%, 84px);
   border: none;
   border-radius: 50%;
   background: radial-gradient(circle, #ffe066 0%, #ffb703 45%, #fb8500 100%);
@@ -37,7 +37,6 @@
 
 .sun.selected,
 .planet-dot.selected {
-  transform: translate(-50%, -50%) scale(1.18);
   box-shadow: 0 0 24px rgba(255, 255, 255, 0.45);
 }
 
@@ -151,6 +150,8 @@
   border-radius: 18px;
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.08);
+  max-height: min(36vh, 300px);
+  overflow-y: auto;
 }
 
 .moon-list h3 {
@@ -163,6 +164,21 @@
   list-style: none;
   display: grid;
   gap: 8px;
+}
+
+.moon-list::-webkit-scrollbar {
+  width: 10px;
+}
+
+.moon-list::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.16);
+  border-radius: 999px;
+  display: none;
+}
+
+.moon-list::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.04);
+  display: none;
 }
 
 .moon-list li {

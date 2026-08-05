@@ -2,6 +2,7 @@ import "./App.css";
 import SolarSystem from "./planets/SolarSystem";
 import { useState, useEffect } from "react";
 import { fetchSpaceData } from "./planets/planetData";
+import Footer from "./assets/Footer";
 
 function App() {
   const greeting = "Welcome to Mission Control!";
@@ -38,6 +39,9 @@ function App() {
       ) : (
         <SolarSystem planets={planets} />
       )}
+
+      <Footer />
+      
     </div>
   );
 }
